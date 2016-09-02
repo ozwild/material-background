@@ -15,7 +15,8 @@ html, body {
 
 #MDB .MDB-rectangle-left {
   position: absolute;
-  height: 380%;
+  height: calc(380% + 920px);
+  margin-top: -420px;
   width: 30%;
   background-color: #303F9F;
   -ms-transform: rotate(7deg); /* IE 9 */
