@@ -20,3 +20,8 @@ Finally, you are required to add the `MDBStart()` when you want the backgroud to
 <div id="MDB">
 </div>
 ```
+## Current Goals
+- [ ] Complete the implementation of colours, make it so they get darker the further out they are.
+- [ ] More shapes, such as a triangle etc. Along with some other options of rectangles and larger circles.
+- [ ] Top, Left, right or bottom decision making, needs to be consistent on that generation.
+- [ ] Build a showcase website that allows users to download and save as images.
