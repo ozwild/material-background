@@ -1,7 +1,13 @@
 # MDBackground
-![Image of the MDBackground progress as of 0.0.1](http://i.imgur.com/gk3ZmBR.png)
+![Image of the MDBackground progress as of 0.0.1](http://i.imgur.com/6hwQlwA.png)
 ## About MDBackground
 A Material Design background generator built in Javascript and CSS, import a random Material Design background into your website development work.
+## Tested On
+| Browser        | Version           | Works  |
+| ------------- |:-------------:| -----:|
+| Google Chrome      | 53 | ✅ |
+| Microsoft Edge      | 25      |   ✅ |
+| Firefox | 47      |    ✅ |
 ## How to Use
 First as with any other jQuery plugin you are required to have jQuery avliable on your website, to do this simple place the code below just before the `</body>` tag. 
 ```
