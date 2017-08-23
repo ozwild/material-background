@@ -4,11 +4,24 @@ var materialBackground = {
     colors: [["#CE93D8", "#BA68C8", "#AB47BC", "#9C27B0", "#8E24AA", "#7B1FA2"], ["#9fa8da", "#5c6bc0", "#3f51b5", "#303f9f", "#283593", "#1a237e"], ["#ffe0b2", "#ffcc80", "#ffb74d", "#ff9800", "#f57c00", "#e65100"]],
     shapes: ["left-rectangle", "circle-small", "circle-large"],
     circleCount: 0,
-    darkTheme: true,
+    nightTheme: false,
+    simpleTheme: false,
 
     start() { //This is how we re-start it etc.
+        $("#material-background").empty();
+        this.circleCount = 0;
+        this.currentZIndex = 1;
+        this.currentColorStrength = 0;
         var rColorChoice = Math.floor((Math.random() * 3));
         $("#material-background").css("background-color", this.colors[rColorChoice][2]);
+        var rNightThemeChoice = Math.floor((Math.random() * 4) + 1);
+        if (rNightThemeChoice == 1) {
+            this.nightTheme = true;
+            $("#material-background").css("background-color", "#121212");
+        } else if (rNightThemeChoice == 2) {
+            this.simpleTheme = true;
+            $("#material-background").css("background-color", "#f2f2f2");
+        }
         var rShapeCount = Math.floor((Math.random() * 5) + 3); //Generate a random number.
         for (var i = 0; i < rShapeCount; i++) { //For each random No. we can apply a shape from the array.
             var rShapeSize = Math.floor((Math.random() * this.shapes.length));
@@ -53,6 +66,8 @@ var materialBackground = {
                     $(this).css('top', b + '%');
                     var c = Math.floor((Math.random() * 100) + 1);
                     $(this).css('left', c + '%');
+                    var rAColorChoice = Math.floor((Math.random() * 3));
+                    if (rAColorChoice == 2) {$(this).css("background-color", materialBackground.colors[rAColorChoice][4])};
                 });
                 this.circleCount++;
             } else {
