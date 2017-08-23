@@ -1,5 +1,5 @@
 var materialBackground = {
-    currentZIndex: 1,
+    currentZIndex: 10,
     currentColorStrength: 0,
     colors: [["#CE93D8", "#BA68C8", "#AB47BC", "#9C27B0", "#8E24AA", "#7B1FA2"], ["#9fa8da", "#5c6bc0", "#3f51b5", "#303f9f", "#283593", "#1a237e"], ["#ffe0b2", "#ffcc80", "#ffb74d", "#ff9800", "#f57c00", "#e65100"]],
     shapes: ["left-rectangle", "circle-small", "circle-large"],
@@ -12,8 +12,12 @@ var materialBackground = {
         this.circleCount = 0;
         this.currentZIndex = 1;
         this.currentColorStrength = 0;
+        
         var rColorChoice = Math.floor((Math.random() * 3));
         $("#material-background").css("background-color", this.colors[rColorChoice][2]);
+        
+        this.drawSecondaryBackground(this.colors[rColorChoice][1]);
+        
         var rNightThemeChoice = Math.floor((Math.random() * 4) + 1);
         if (rNightThemeChoice == 1) {
             this.nightTheme = true;
@@ -22,6 +26,7 @@ var materialBackground = {
             this.simpleTheme = true;
             $("#material-background").css("background-color", "#f2f2f2");
         }
+        
         var rShapeCount = Math.floor((Math.random() * 5) + 3); //Generate a random number.
         for (var i = 0; i < rShapeCount; i++) { //For each random No. we can apply a shape from the array.
             var rShapeSize = Math.floor((Math.random() * this.shapes.length));
@@ -29,7 +34,16 @@ var materialBackground = {
             this.currentZIndex++;
         }
     },
-
+    
+    drawSecondaryBackground(color) {
+        var rSecondaryBackground = Math.floor((Math.random() * 3));
+        if (rSecondaryBackground == 1){
+            var b = Math.floor((Math.random() * 60) + 30);
+            var c = Math.floor((Math.random() * 30) + 10);
+            $("#material-background").append("<div style='background-color: " + color + "; left: " + c + "%; width: " + b + "%;' class='material-parallelogram material-shadow-low'></div>");
+        } 
+    },
+    
     randomize(shapeType, colorChoice) { //Randomizing by shape type
         if (shapeType == "left-rectangle") { //if a rectangle needs doing.
             var shadowStrength = "strong";
@@ -47,7 +61,7 @@ var materialBackground = {
             console.log(b);
         } else if (shapeType == "circle-large") {
             if (this.circleCount <= 0) {
-                $("#material-background").append("<div style='z-index: " + (this.currentZIndez + 30) + ";' class='material-circle-large material-shadow-strongest'></div>");
+                $("#material-background").append("<div class='material-circle-large material-shadow-strongest'></div>");
                 $('.material-circle-large').each(function () { //go through all circles and randomize their location.
                     var b = Math.floor((Math.random() * 100) + 1);
                     $(this).css('top', b + '%');
@@ -60,7 +74,7 @@ var materialBackground = {
             }
         } else if (shapeType == "circle-small") {
             if (this.circleCount <= 0) {
-                $("#material-background").append("<div style='z-index: " + (this.currentZIndez + 30) + ";' class='material-circle-small material-shadow-strongest'></div>");
+                $("#material-background").append("<div class='material-circle-small material-shadow-strongest'></div>");
                 $('.material-circle-small').each(function () { //go through all circles and randomize their location.
                     var b = Math.floor((Math.random() * 100) + 1);
                     $(this).css('top', b + '%');

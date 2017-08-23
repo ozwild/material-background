@@ -1,5 +1,5 @@
 # material-background Generator
-![Image of the material-background progress](http://i.imgur.com/6hwQlwA.png)
+![Image of the material-background progress](http://i.imgur.com/iHSdVpt.png)
 ## About material-background
 A Material Design background generator built in Javascript and CSS, import a random Material Design background into your website development work.
 ## Tested On
