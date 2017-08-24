@@ -31,6 +31,22 @@ body {
     z-index: 100;
 }
 
+#material-background .material-rectangle-right {
+    position: absolute;
+    height: calc(380% + 920px);
+    margin-top: -420px;
+    width: 30%;
+    background-color: #303F9F;
+    -ms-transform: rotate(7deg);
+    /* IE 9 */
+    -webkit-transform: rotate(7deg);
+    /* Chrome, Safari, Opera */
+    transform: rotate(7deg);
+    right: -10%;
+    top: -100%;
+    z-index: 100;
+}
+
 #material-background .material-circle-small {
     margin-top: -30px;
     margin-left: -30px;
@@ -43,8 +59,8 @@ body {
 }
 
 #material-background .material-circle-large {
-    margin-top: -30px;
-    margin-left: -30px;
+    margin-top: -80px;
+    margin-left: -80px;
     border-radius: 50%;
     width: 400px;
     height: 400px;
