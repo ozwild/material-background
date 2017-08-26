@@ -34,7 +34,7 @@ var materialBackground = {
         var rColorChoice = Math.floor((Math.random() * this.colors.length));
         $("#material-background").css("background-color", this.colors[rColorChoice][2]);
         var rDarknessColor = Math.floor((Math.random() * 8) + 3);
-        this.drawSecondaryBackground(this.colors[rColorChoice][1]);
+        this.drawSecondaryBackground(this.colors[rColorChoice][3]);
         
         var rNightThemeChoice = Math.floor((Math.random() * 4) + 1);
         if (rNightThemeChoice == 1) {
