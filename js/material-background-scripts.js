@@ -1,6 +1,5 @@
 var materialBackground = {
-    currentZIndex: 10,
-    currentColorStrength: 0,
+    currentZIndex: 0, //Z-index of the current level
     colors: [["#ffebee","#ffcdd2","#ef9a9a","#e57373","#ef5350","#f44336","#e53935","#d32f2f","#c62828","#b71c1c"],
             ["#fce4ec","#f8bbd0","#f48fb1","#f06292","#ec407a","#e91e63","#d81b60","#c2185b","#ad1457","#880e4f"],
             ["#f3e5f5","#e1bee7","#ce93d8","#ba68c8","#ab47bc","#9c27b0","#8e24aa","#7b1fa2","#6a1b9a","#4a148c"],
@@ -19,25 +18,25 @@ var materialBackground = {
             ["#fbe9e7","#ffccbc","#ffab91","#ff8a65","#ff7043","#ff5722","#f4511e","#e64a19","#d84315","#bf360c"],
             ["#efebe9","#d7ccc8","#bcaaa4","#a1887f","#8d6e63","#795548","#6d4c41","#5d4037","#4e342e","#3e2723"],
             ["#fafafa","#f5f5f5","#eeeeee","#e0e0e0","#bdbdbd","#9e9e9e","#757575","#616161","#424242","#212121"],
-            ["#eceff1","#cfd8dc","#b0bec5","#90a4ae","#78909c","#607d8b","#546e7a","#455a64","#37474f","#263238"]],
-    shapes: ["left-rectangle", "right-rectangle", "circle-small", "circle-large"],
+            ["#eceff1","#cfd8dc","#b0bec5","#90a4ae","#78909c","#607d8b","#546e7a","#455a64","#37474f","#263238"]], // The current colours, in a 2D array.
+    shapes: ["left-rectangle", "right-rectangle", "circle-small", "circle-large"], // the shapes currently in use.
     circleCount: 0,
-    nightTheme: false,
+    nightTheme: false, // The theme options.
     simpleTheme: false,
 
-    start() { //This is how we re-start it etc.
+    start() {
         $("#material-background").empty();
         this.circleCount = 0;
-        this.currentZIndex = 1;
+        this.currentZIndex = 0; // Clean reset of the stats when start is called.
         this.currentColorStrength = 0;
         
         var rColorChoice = Math.floor((Math.random() * this.colors.length));
-        var rDarknessColor = Math.floor((Math.random() * 7) + 3);
-        $("#material-background").css("background-color", this.colors[rColorChoice][rDarknessColor-3]);
+        var rDarknessColor = Math.floor((Math.random() * 4) + 2);
+        $("#material-background").css("background-color", this.colors[rColorChoice][rDarknessColor-1]);
 
-        this.drawSecondaryBackground(this.colors[rColorChoice][rDarknessColor-2]);
+        this.drawSecondaryBackground(this.colors[rColorChoice][rDarknessColor]);
         
-        var rNightThemeChoice = Math.floor((Math.random() * 4) + 1);
+        var rNightThemeChoice = Math.floor((Math.random() * 5) + 1);
         if (rNightThemeChoice == 1) {
             this.nightTheme = true;
             $("#material-background").css("background-color", "#121212");
@@ -46,15 +45,19 @@ var materialBackground = {
             $("#material-background").css("background-color", "#f2f2f2");
         }
         
-        
-        ///REWRITING THIS LOOP SOON TO BE MORE EFFECTIVE.
-        
-        
         var rShapeCount = Math.floor((Math.random() * 5) + 3); //Generate a random number.
         for (var i = 0; i < rShapeCount; i++) { //For each random No. we can apply a shape from the array.
             var rShapeSize = Math.floor((Math.random() * this.shapes.length));
             this.randomize(this.shapes[rShapeSize], rColorChoice, rDarknessColor);
-            this.currentZIndex++;
+            
+            var escalateChance = Math.floor((Math.random() * 3));
+            if (escalateChance <= 1) {
+                if (this.currentZIndex >= 4) {
+                    console.log("Reached max colors."); // if it is escalated too far, the max colors log is shown.
+                } else {
+                    this.currentZIndex++;
+                }
+            }
         }
     },
     
@@ -65,66 +68,58 @@ var materialBackground = {
             var c = Math.floor((Math.random() * 30) + 10);
             var skewLevel = Math.floor((Math.random() * 20) + -20);
             $("#material-background").append("<div style='background-color: " + color + "; left: " + c + "%; width: " + b + "%; transform: skew(" + skewLevel + "deg); -webkit-transform: skew(" + skewLevel + "deg);' class='material-parallelogram material-shadow-low'></div>");
-        } 
-    },
+            
+            var doubleChance = Math.floor((Math.random() * 5));
+            if (doubleChance == 2) {
+                $("#material-background").append("<div style='background-color: " + color + "; left: " + (c + 10) + "%; width: " + (b*2) + "%; transform: skew(" + skewLevel + "deg); -webkit-transform: skew(" + skewLevel + "deg);' class='material-parallelogram material-shadow-strong'></div>");
+            }
+        } // Draw a larger shape area on screen.
+    }, 
     
-    randomize(shapeType, colorChoice, darkness) { //Randomizing by shape type
-        if (shapeType == "left-rectangle") { //if a rectangle needs doing.
-            var shadowStrength = "strong";
-            var rShadowLevels = Math.floor((Math.random() * 3) + 0);
-            if (this.currentZIndez >= 5 && rShadowLevels == 2) {
-                shadowStrength = "strongest";
-            }
-            var b = Math.floor((Math.random() * 270) + 80);
-            $("#material-background").append("<div style='width: " + b + "px; z-index: " + this.currentZIndez + ";' class='material-rectangle-left material-shadow-" + shadowStrength + "'></div>");
-            $('.material-rectangle-left').each(function () { //go through all rextangles and randomize their rotation.
-                var a = Math.floor((Math.random() * 180) + 1);
-                $(this).css('transform', 'rotate(' + a + 'deg)');
-                $(this).css("background-color", materialBackground.colors[colorChoice][darkness]);
-            });
-        } else if (shapeType == "right-rectangle") { //if a rectangle needs doing.
-            var shadowStrength = "strong";
-            var rShadowLevels = Math.floor((Math.random() * 3) + 0);
-            if (this.currentZIndez >= 5 && rShadowLevels == 2) {
-                shadowStrength = "strongest";
-            }
-            var b = Math.floor((Math.random() * 270) + 80);
-            $("#material-background").append("<div style='width: " + b + "px; z-index: " + this.currentZIndez + ";' class='material-rectangle-right material-shadow-" + shadowStrength + "'></div>");
-            $('.material-rectangle-right').each(function () { //go through all rextangles and randomize their rotation.
-                var a = Math.floor((Math.random() * 180) + 1);
-                $(this).css('transform', 'rotate(' + a + 'deg)');
-                $(this).css("background-color", materialBackground.colors[colorChoice][darkness]);
-            });
+    randomize(shapeType, colorChoice, darkness) {
+        
+        if (shapeType == "left-rectangle") {
+            // Create a left-rectangle 
+            var width = Math.floor((Math.random() * 270) + 80);
+            var rotation = Math.floor((Math.random() * 180) + 1);
+            $("#material-background").append("<div style=\'transform: rotate(" + rotation + "deg); width: " + width + "px; background-color: " + materialBackground.colors[colorChoice][darkness + materialBackground.currentZIndex] + "\' class=\'material-rectangle-left material-shadow-strong\'></div>");
+            
+        } else if (shapeType == "right-rectangle") {
+            // Create a right-rectangle
+            var width = Math.floor((Math.random() * 270) + 80);
+            var rotation = Math.floor((Math.random() * 180) + 1);
+            $("#material-background").append("<div style=\'transform: rotate(" + rotation + "deg); width: " + width + "px; background-color: " + materialBackground.colors[colorChoice][darkness + materialBackground.currentZIndex] + "\' class=\'material-rectangle-right material-shadow-strong\'></div>");
+            
         } else if (shapeType == "circle-large") {
+            // Create a large circle.
             if (this.circleCount <= 0) {
-                $("#material-background").append("<div class='material-circle-large material-shadow-strongest'></div>");
-                $('.material-circle-large').each(function () { //go through all circles and randomize their location.
-                    var b = Math.floor((Math.random() * 90) + 1);
-                    $(this).css('top', b + '%');
-                    var c = Math.floor((Math.random() * 90) + 1);
-                    $(this).css('left', c + '%');
-                    var rAColorChoice = Math.floor((Math.random() * materialBackground.colors.length));
-                    $(this).css("background-color", materialBackground.colors[rAColorChoice][8]);
-                });
+                
+                var left = Math.floor((Math.random() * 90) + 1);
+                var top = Math.floor((Math.random() * 90) + 1);
+                var rAColorChoice = Math.floor((Math.random() * materialBackground.colors.length));
+                $("#material-background").append("<div style=\'left: " + left + "%; top: " + top + "%; background-color: " + materialBackground.colors[rAColorChoice][8] + "\' class=\'material-circle-large material-shadow-strongest\'></div>");
+
                 this.circleCount++;
+                
             } else {
-                this.randomize("left-rectangle", colorChoice, darkness); //At the moment dont want too many circles, we will create more rectangles for now.s
+                this.randomize("left-rectangle", colorChoice, darkness);
             }
+            
         } else if (shapeType == "circle-small") {
+            // Create a smaller circle.
             if (this.circleCount <= 0) {
-                $("#material-background").append("<div class='material-circle-small material-shadow-strongest'></div>");
-                $('.material-circle-small').each(function () { //go through all circles and randomize their location.
-                    var b = Math.floor((Math.random() * 90) + 1);
-                    $(this).css('top', b + '%');
-                    var c = Math.floor((Math.random() * 90) + 1);
-                    $(this).css('left', c + '%');
-                    var rAColorChoice = Math.floor((Math.random() * materialBackground.colors.length));
-                    $(this).css("background-color", materialBackground.colors[rAColorChoice][8]);
-                });
+                
+                var left = Math.floor((Math.random() * 90) + 1);
+                var top = Math.floor((Math.random() * 90) + 1);
+                var rAColorChoice = Math.floor((Math.random() * materialBackground.colors.length));
+                $("#material-background").append("<div style=\'left: " + left + "%; top: " + top + "%; background-color: " + materialBackground.colors[rAColorChoice][8] + "\' class=\'material-circle-small material-shadow-strongest\'></div>");
+
                 this.circleCount++;
+                
             } else {
-                this.randomize("left-rectangle", colorChoice, darkness); //At the moment dont want too many circles, we will create more rectangles for now.s
+                this.randomize("left-rectangle", colorChoice, darkness);
             }
+            
         }
     }
 };
